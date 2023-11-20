@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { isValidObjectId } from "mongoose";
 export const authMiddleware = (req, res, next) => {
   const token = req.headers.token.split(" ")[1];
-  const userId = req.params.userId ? req.params.userId : req.headers.id;
+  const userId = req.headers.id;
   const checkId = isValidObjectId(userId);
   if (!checkId) {
     return res.status(404).json({
@@ -10,11 +10,23 @@ export const authMiddleware = (req, res, next) => {
       message: "This account can not update or delete!",
     });
   }
+  if (!userId) {
+    return res.status(404).json({
+      status: "error",
+      message: "Id is required!",
+    });
+  }
+  if (req.params.userId && req.params.userId !== userId) {
+    return res.status(404).json({
+      status: "error",
+      message: "The Authentication Id Error occurred!",
+    });
+  }
   jwt.verify(token, process.env.JWT_SECRET, async function (err, user) {
     if (err) {
       return res.status(404).json({
         status: "error",
-        message: "The Authentication Error occurred!",
+        message: "The Authentication Token Error occurred!",
       });
     } else {
       const { payload } = user;
@@ -25,7 +37,7 @@ export const authMiddleware = (req, res, next) => {
       } else {
         return res.status(404).json({
           status: "error",
-          message: "The Authentication Error occurred!",
+          message: "The Authentication Catch Error occurred!",
         });
       }
     }

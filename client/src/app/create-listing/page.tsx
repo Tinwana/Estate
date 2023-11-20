@@ -2,13 +2,19 @@
 
 import ButtonComponent from "@/components/ui/buttonComponent";
 import InputComponent from "@/components/ui/inputComponent";
-import { MouseEventHandler, useRef, useState } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { storage } from "@/config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { fetchFailure, fetchingSuccess, isFetching } from "@/redux/userSlice";
+import {
+  fetchFailure,
+  fetchingSuccess,
+  isFetching,
+  logOut,
+} from "@/redux/userSlice";
 import { axiosRoot } from "@/lib/axios/axiosInstance";
 import { useRouter } from "next/navigation";
+import { logOutService } from "@/services/authServices/logOut";
 
 const CreateListingPage = () => {
   const dispatch = useAppDispatch();
@@ -133,16 +139,20 @@ const CreateListingPage = () => {
         },
       });
       if (res.data?.status === "OK") {
-        console.log(res.data);
-
         dispatch(fetchingSuccess());
-        router.push(`/listing/${res.data?.data?._id}`);
+        router.push(`/listing/detail/${res.data?.data?._id}`);
       }
     } catch (error: any) {
       dispatch(fetchFailure(error?.response?.data?.message || error.message));
     }
   };
-
+  useEffect(() => {
+    if (!user?.id) {
+      logOutService();
+      dispatch(logOut());
+      router.push("/sign-in");
+    }
+  }, []);
   return (
     <form
       className="mt-[72px] p-3 max-w-4xl mx-auto"

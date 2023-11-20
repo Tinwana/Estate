@@ -2,7 +2,7 @@
 import ButtonComponent from "@/components/ui/buttonComponent";
 import InputComponent from "@/components/ui/inputComponent";
 import { storage } from "@/config/firebase";
-import { axiosAuth, axiosRoot } from "@/lib/axios/axiosInstance";
+import { axiosRoot } from "@/lib/axios/axiosInstance";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
   fetchFailure,
@@ -46,7 +46,7 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
   const uniqueFileName = image?.name + Date.now().toString();
 
   useEffect(() => {
-    if (!user?.accessToken) {
+    if (user === null || !user.accessToken || !user.id) {
       logOutService();
       dispatch(logOut());
       route.push("/sign-in");
@@ -242,7 +242,7 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
                   <div
                     className="flex gap-4 items-center"
                     onClick={() => {
-                      route.push(`/listing/${listing._id}`);
+                      route.push(`/listing/detail/${listing._id}`);
                     }}
                   >
                     <img
@@ -265,7 +265,12 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
                     >
                       DELETE
                     </button>
-                    <button className="text-green-600 bg-transparent hover:text-green-300 cursor-pointer pt-3 pr-3 ">
+                    <button
+                      className="text-green-600 bg-transparent hover:text-green-300 cursor-pointer pt-3 pr-3 "
+                      onClick={() => {
+                        route.push(`/listing/edit/${listing._id}`);
+                      }}
+                    >
                       EDIT
                     </button>
                   </div>
@@ -275,7 +280,9 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
         </div>
       </div>
       <form
-        className="flex-grow bg-[#f9f9f9] shadow-lg border-[#e0e0e0] divide-y-2 rounded-lg h-[548.8px]"
+        className={`flex-grow bg-[#f9f9f9] shadow-lg border-[#e0e0e0] divide-y-2 rounded-lg] ${
+          showChangPassword === false ? "h-[548.8px]" : "h-[600px]"
+        }`}
         onSubmit={handleSubmit}
       >
         <div className="flex justify-between items-center">
@@ -386,7 +393,9 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
               outline="scarlet"
               classNames="w-32 text-[.5rem] lg:w-1/2 lg:text-[1rem]  "
               onClick={() => {
-                setShowChangPassword(!showChangPassword);
+                if (editable === true) {
+                  setShowChangPassword(!showChangPassword);
+                }
               }}
             >
               Change Password

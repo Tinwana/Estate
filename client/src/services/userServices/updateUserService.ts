@@ -8,6 +8,7 @@ export const deleteUserService = async (id: string, token: string) => {
 
       headers: {
         token: `bearer ${token}`,
+        id: id,
       },
     });
     return res.data;

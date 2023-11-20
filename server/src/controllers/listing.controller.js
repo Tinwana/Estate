@@ -50,5 +50,98 @@ class listingController {
       next(error);
     }
   }
+  async updateListing(req, res, next) {
+    try {
+      const listingId = req.params.listingId;
+      const listing = await Listing.findById(listingId);
+      console.log(listing, listingId);
+      const updateListing = await Listing.findByIdAndUpdate(
+        listingId,
+        req.body,
+        { new: true }
+      );
+      if (!listingId) {
+        return res.status(400).json({
+          status: "error",
+          message: "listing Id is required!",
+        });
+      }
+      if (!listing) {
+        return res.status(400).json({
+          status: "error",
+          message: "listing not found!",
+        });
+      }
+      if (updateListing) {
+        return res.status(200).json({
+          status: "OK",
+          message: "Update listing successfully!",
+          data: updateListing,
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getDetailListing(req, res, next) {
+    try {
+      const listingId = req.params.listingId;
+      const listing = await Listing.findById(listingId);
+      if (!listing) {
+        return res.status(400).json({
+          status: "error",
+          message: "listing not found!",
+        });
+      } else {
+        return res.status(200).json({
+          status: "OK",
+          message: "listing has found!",
+          data: listing,
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getDetailListing(req, res, next) {
+    try {
+      const listingId = req.params.listingId;
+      const listing = await Listing.findById(listingId);
+      if (!listing) {
+        return res.status(400).json({
+          status: "error",
+          message: "listing not found!",
+        });
+      } else {
+        return res.status(200).json({
+          status: "OK",
+          message: "listing has found!",
+          data: listing,
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getAllListings(req, res, next) {
+    try {
+      const listings = await Listing.find();
+      if (!listings) {
+        return res.status(400).json({
+          status: "error",
+          message: "there are no listings in the roup!",
+        });
+      } else {
+        return res.status(200).json({
+          status: "OK",
+          message: "listings has found!",
+          data: listings,
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 export default new listingController();

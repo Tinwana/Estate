@@ -20,8 +20,8 @@ class userController {
           req.body.password === ""
             ? user.password
             : await argon2.hash(req.body.password);
-        const updateUser = await User.findOneAndUpdate(
-          { _id: userId },
+        const updateUser = await User.findByIdAndUpdate(
+          userId,
           {
             name: req.body.name,
             age: req.body.age,

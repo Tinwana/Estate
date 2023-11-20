@@ -13,9 +13,10 @@ import { useEffect } from "react";
 
 const Header = () => {
   const user = useAppSelector((state) => state.user.currentUser);
+
   const loading = useAppSelector((state) => state.user.loading);
-  const { CancelToken } = axios;
-  const source = CancelToken.source();
+  // const { CancelToken } = axios;
+  // const source = CancelToken.source();
   const dispatch = useAppDispatch();
   const route = useRouter();
   // const refreshToken = async () => {
@@ -101,6 +102,7 @@ const Header = () => {
         );
       } else {
         clearTimeout(timeoutId);
+        await logOutService();
         dispatch(logOut);
         route.push("/sign-in");
       }
@@ -124,6 +126,7 @@ const Header = () => {
           })
         );
       } else {
+        await logOutService();
         clearTimeout(timeoutId);
         dispatch(logOut);
       }
@@ -154,7 +157,7 @@ const Header = () => {
               <FaSearch />
             </span>
           </form>
-          {user === null || !user.accessToken ? (
+          {user === null || !user.accessToken || !user.id ? (
             <ul className="flex gap-4 md:gap-8">
               <li className="hover:underline font-medium hidden md:inline-block">
                 <Link href="/about">About</Link>

@@ -1,5 +1,3 @@
-import React from "react";
-
 const ListingDetailPage = ({ params }: { params: { listingId: string } }) => {
   const { listingId } = params;
   return (
