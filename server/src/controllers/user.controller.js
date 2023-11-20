@@ -1,9 +1,17 @@
 import argon2 from "argon2";
 import User from "../models/user.model.js";
+import { isValidObjectId } from "mongoose";
 class userController {
   async updateUser(req, res, next) {
-    const userId = req.params.userId;
     try {
+      const userId = req.params.userId;
+      const checkId = isValidObjectId(userId);
+      if (!checkId) {
+        return res.status(404).json({
+          status: "error",
+          message: "This account can not update or delete!",
+        });
+      }
       const user = await User.findOne({ _id: userId });
       if (!userId) {
         return res.status(400).json({
@@ -49,6 +57,13 @@ class userController {
   async deleteUser(req, res, next) {
     const userId = req.params.userId;
     try {
+      const checkId = isValidObjectId(userId);
+      if (!checkId) {
+        return res.status(404).json({
+          status: "error",
+          message: "This account can not update or delete!",
+        });
+      }
       const user = await User.findOne({ _id: userId });
       if (!userId) {
         return res.status(400).json({

@@ -5,13 +5,21 @@ import { authMiddleware } from "../middlewares/authMiddleware.js";
 const listingRoute = express.Router();
 
 listingRoute.post("/", authMiddleware, listingController.createListing);
-listingRoute.put(
+listingRoute.patch(
   "/:listingId",
   authMiddleware,
   listingController.updateListing
 );
-listingRoute.get("/:userId", authMiddleware, listingController.getUserListing);
-listingRoute.get("/:listingId", listingController.getDetailListing);
+listingRoute.get(
+  "/user/:userId",
+  authMiddleware,
+  listingController.getUserListing
+);
+listingRoute.get(
+  "/:listingId",
+  authMiddleware,
+  listingController.getDetailListing
+);
 listingRoute.delete(
   "/:listingId",
   authMiddleware,

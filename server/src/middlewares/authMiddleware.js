@@ -3,25 +3,18 @@ import { isValidObjectId } from "mongoose";
 export const authMiddleware = (req, res, next) => {
   const token = req.headers.token.split(" ")[1];
   const userId = req.headers.id;
-  const checkId = isValidObjectId(userId);
-  if (!checkId) {
-    return res.status(404).json({
-      status: "error",
-      message: "This account can not update or delete!",
-    });
-  }
   if (!userId) {
     return res.status(404).json({
       status: "error",
       message: "Id is required!",
     });
   }
-  if (req.params.userId && req.params.userId !== userId) {
-    return res.status(404).json({
-      status: "error",
-      message: "The Authentication Id Error occurred!",
-    });
-  }
+  // if (req.params.userId && req.params.userId !== userId) {
+  //   return res.status(404).json({
+  //     status: "error",
+  //     message: "The Authentication Id Error occurred!",
+  //   });
+  // }
   jwt.verify(token, process.env.JWT_SECRET, async function (err, user) {
     if (err) {
       return res.status(404).json({

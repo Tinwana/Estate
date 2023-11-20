@@ -54,7 +54,6 @@ class listingController {
     try {
       const listingId = req.params.listingId;
       const listing = await Listing.findById(listingId);
-      console.log(listing, listingId);
       const updateListing = await Listing.findByIdAndUpdate(
         listingId,
         req.body,

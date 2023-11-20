@@ -132,7 +132,7 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
       if (userListings?.length <= 0 && showListings === false) {
         const res = await axiosRoot({
           method: "GET",
-          url: `listings/${user?.id}`,
+          url: `listings/user/${user?.id}`,
           headers: {
             token: `bearer ${user?.accessToken}`,
             id: user?.id,
@@ -232,51 +232,53 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
               Your Listings
             </h1>
           )}
-          {showListings &&
-            userListings?.map((listing: listing) => {
-              return (
-                <div
-                  key={listing._id}
-                  className="flex flex-col justify-between p-3 border-[1px] border-gray-300 rounded-lg shadow-md cursor-pointer "
-                >
+          <div className=" overflow-scroll overflow-x-hidden h-[297px] flex flex-col gap-4 pr-2 scroll-smooth">
+            {showListings &&
+              userListings?.map((listing: listing) => {
+                return (
                   <div
-                    className="flex gap-4 items-center"
-                    onClick={() => {
-                      route.push(`/listing/detail/${listing._id}`);
-                    }}
+                    key={listing._id}
+                    className="flex flex-col justify-between p-3 border-[1px] border-gray-300 rounded-lg shadow-md cursor-pointer "
                   >
-                    <img
-                      src={listing.image[0]}
-                      alt="listing"
-                      className="object-contain w-24"
-                    />
-                    <p className="font-medium break-all">{listing.name}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      className="text-red-600 bg-transparent hover:text-red-300 cursor-pointer pt-3 pr-3 "
-                      onClick={() =>
-                        handleDeleteListing(
-                          listing._id,
-                          user?.accessToken,
-                          user?.id
-                        )
-                      }
-                    >
-                      DELETE
-                    </button>
-                    <button
-                      className="text-green-600 bg-transparent hover:text-green-300 cursor-pointer pt-3 pr-3 "
+                    <div
+                      className="flex gap-4 items-center"
                       onClick={() => {
-                        route.push(`/listing/edit/${listing._id}`);
+                        route.push(`/listing/detail/${listing._id}`);
                       }}
                     >
-                      EDIT
-                    </button>
+                      <img
+                        src={listing.image[0]}
+                        alt="listing"
+                        className="object-contain w-24"
+                      />
+                      <p className="font-medium break-all">{listing.name}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="text-red-600 bg-transparent hover:text-red-300 cursor-pointer pt-3 pr-3 "
+                        onClick={() =>
+                          handleDeleteListing(
+                            listing._id,
+                            user?.accessToken,
+                            user?.id
+                          )
+                        }
+                      >
+                        DELETE
+                      </button>
+                      <button
+                        className="text-green-600 bg-transparent hover:text-green-300 cursor-pointer pt-3 pr-3 "
+                        onClick={() => {
+                          route.push(`/listing/edit/${listing._id}`);
+                        }}
+                      >
+                        EDIT
+                      </button>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
         </div>
       </div>
       <form
