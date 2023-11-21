@@ -19,9 +19,11 @@ services:
     volumes:
       - ./server:/app
       - /app/node_modules
+    networks:
+      - backend
     environment:
       - PORT=3001
-      - DATABASE_URL=mongodb://127.0.0.1:27017/auth
+      - DATABASE_URL=mongodb+srv://nguyenlehoaitin:CAvqNziTJRj4eABy@cluster0.nxjidvn.mongodb.net/?retryWrites=true&w=majority
       - JWT_SECRET=hoaitin
   client:
     build: ./client
@@ -32,9 +34,9 @@ services:
       - ./client:/app
       - /app/node_modules
 
-# networks:
-#   backend:
-#     driver: bridge
+networks:
+  backend:
+    driver: bridge
 
 # volumes:
 #   mongodb_data:
