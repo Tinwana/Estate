@@ -1,5 +1,16 @@
 version: '1'
 services:
+  # mongodb:
+  #   image: mongo
+  #   volumes:
+  #     - mongodb_data:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: "hoaitin"
+  #     MONGO_INITDB_ROOT_PASSWORD: "844466tin"
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - "27017:27017"
   api:
     build: ./server
     container_name: api-server
@@ -20,3 +31,10 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+
+# networks:
+#   backend:
+#     driver: bridge
+
+# volumes:
+#   mongodb_data:

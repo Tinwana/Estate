@@ -3,10 +3,12 @@ import mongoose from "mongoose";
 async function connectDb() {
   try {
     const url = process.env.DATABASE_URL;
-    await mongoose.connect(url);
+    const trueUrl = url.toString();
+    console.log(trueUrl);
+    await mongoose.connect(trueUrl);
     console.log("connect successful!");
   } catch (err) {
-    console.log("connect failure!");
+    console.log("connect failure!", err);
   }
 }
 
