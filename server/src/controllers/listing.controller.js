@@ -125,19 +125,11 @@ class listingController {
   }
   async getAllListings(req, res, next) {
     try {
-      const listings = await Listing.find();
-      if (!listings) {
-        return res.status(400).json({
-          status: "error",
-          message: "there are no listings in the roup!",
-        });
-      } else {
-        return res.status(200).json({
-          status: "OK",
-          message: "listings has found!",
-          data: listings,
-        });
-      }
+      return res.status(200).json({
+        status: "OK",
+        message: "listings has found!",
+        data: req.listingService,
+      });
     } catch (error) {
       next(error);
     }
