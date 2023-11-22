@@ -16,11 +16,7 @@ listingRoute.get(
   listingController.getUserListing
 );
 listingRoute.get("/", listingController.getAllListings);
-listingRoute.get(
-  "/:listingId",
-  authMiddleware,
-  listingController.getDetailListing
-);
+listingRoute.get("/:listingId", listingController.getDetailListing);
 listingRoute.delete(
   "/:listingId",
   authMiddleware,

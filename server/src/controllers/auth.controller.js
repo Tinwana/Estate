@@ -53,7 +53,6 @@ class authController {
   async signIn(req, res, next) {
     try {
       const { email, password } = req.body;
-      console.log(req.body);
       const checkUser = await User.findOne({ email: email });
       if (!email || !password) {
         return res.status(401).json({

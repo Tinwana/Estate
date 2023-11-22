@@ -2,7 +2,7 @@
 import ButtonComponent from "@/components/ui/buttonComponent";
 import InputComponent from "@/components/ui/inputComponent";
 import Oauth from "@/feature/auth/Oauth";
-import { axiosRoot } from "@/lib/axios/axiosInstance";
+import { axiosAuth } from "@/lib/axios/axiosInstance";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchFailure, isFetching, signUpSuccess } from "@/redux/userSlice";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const SignUpPage = () => {
     e.preventDefault();
     try {
       dispatch(isFetching());
-      const res = await axiosRoot({
+      const res = await axiosAuth({
         method: "POST",
         url: "auth/sign-up",
         data: {

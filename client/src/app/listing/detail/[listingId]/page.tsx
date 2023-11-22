@@ -16,6 +16,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import ButtonComponent from "@/components/ui/buttonComponent";
 import { FaBath, FaBed, FaChair, FaParking } from "react-icons/fa";
+import Contact from "@/components/ui/ContactComponent";
 
 const ListingDetailPage = ({ params }: { params: { listingId: string } }) => {
   SwiperCore.use([Navigation]);
@@ -36,7 +37,10 @@ const ListingDetailPage = ({ params }: { params: { listingId: string } }) => {
     offer: false,
     parking: false,
     furnished: false,
+    userRef: "",
   });
+  const [contact, setContact] = useState(false);
+
   useEffect(() => {
     if (!user?.id) {
       logOutService();
@@ -65,6 +69,7 @@ const ListingDetailPage = ({ params }: { params: { listingId: string } }) => {
             parking: res.data?.parking,
             regularPrice: res.data?.regularPrice,
             type: res.data.type,
+            userRef: res.data?.userRef,
           });
           dispatch(fetchingSuccess());
         }
@@ -183,6 +188,16 @@ const ListingDetailPage = ({ params }: { params: { listingId: string } }) => {
             <span>{listings.furnished ? "Have" : "Not"} furnished</span>
           </p>
         </div>
+        {user && listings.userRef !== user.id && !contact && (
+          <ButtonComponent
+            onClick={() => {
+              setContact(true);
+            }}
+          >
+            Contact landlord
+          </ButtonComponent>
+        )}
+        {contact && <Contact listing={listings} />}
       </div>
     </div>
   );

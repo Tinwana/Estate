@@ -3,11 +3,12 @@ import { axiosAuth } from "@/lib/axios/axiosInstance";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { logOut, signInSuccess } from "@/redux/userSlice";
 import { logOutService } from "@/services/authServices/logOut";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
   const user = useAppSelector((state) => state.user.currentUser);
-
+  const route = useRouter();
   const dispatch = useAppDispatch();
   const refreshToken = async () => {
     try {
@@ -25,6 +26,11 @@ export default function Home() {
     }
   };
   useEffect(() => {
+    if (user === null || !user.accessToken || !user.id) {
+      logOutService();
+      dispatch(logOut());
+      route.push("/sign-in");
+    }
     const timeoutId = setTimeout(async () => {
       const res = await refreshToken();
       if (res?.status === "OK") {

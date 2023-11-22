@@ -33,6 +33,8 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+    networks:
+      - backend
 
 networks:
   backend:

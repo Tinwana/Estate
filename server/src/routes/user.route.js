@@ -6,5 +6,6 @@ const userRoute = express.Router();
 
 userRoute.delete("/:userId", authMiddleware, userController.deleteUser);
 userRoute.patch("/:userId", authMiddleware, userController.updateUser);
+userRoute.get("/:userId", authMiddleware, userController.getUser);
 
 export default userRoute;

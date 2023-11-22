@@ -313,10 +313,11 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
                   type="text"
                   id="name"
                   name="name"
-                  value={user?.name}
+                  value={formData.name}
+                  required={false}
                 />
               ) : (
-                <span className="text-1xl">{user?.name}</span>
+                <span className="text-1xl">{formData.name}</span>
               )}
             </div>
             <div>
@@ -332,10 +333,11 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
                   type="text"
                   id="age"
                   name="age"
-                  value={user?.age}
+                  value={formData.age}
+                  required={false}
                 />
               ) : (
-                <span className="text-1xl">{user?.age}</span>
+                <span className="text-1xl">{formData.age}</span>
               )}
             </div>
             <div>
@@ -351,10 +353,11 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
                   type="text"
                   id="address"
                   name="address"
-                  value={user?.address}
+                  value={formData.address}
+                  required={false}
                 />
               ) : (
-                <span className="text-1xl">{user?.address}</span>
+                <span className="text-1xl">{formData.address}</span>
               )}
             </div>
             <div>
@@ -364,7 +367,7 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
               >
                 Username:{" "}
               </label>
-              <span className="text-1xl">{user?.username}</span>
+              <span className="text-1xl">{formData.username}</span>
             </div>
             <div>
               <label
@@ -373,7 +376,7 @@ const ProfilePage = ({ params }: { params: { userId: string } }) => {
               >
                 Email:{" "}
               </label>
-              <span className="text-1xl">{user?.email}</span>
+              <span className="text-1xl">{formData.email}</span>
             </div>
             {showChangPassword && editable && (
               <div>

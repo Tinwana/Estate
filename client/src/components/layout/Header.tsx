@@ -1,15 +1,27 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaSearch, FaUser } from "react-icons/fa";
 import Loading from "../ui/loading";
 import { axiosAuth, axiosRoot } from "@/lib/axios/axiosInstance";
-import jwtDecoded from "jwt-decode";
-import { jwtDecode } from "jwt-decode";
 import { logOutService } from "@/services/authServices/logOut";
 import { logOut, signInSuccess } from "@/redux/userSlice";
 import { useEffect } from "react";
+
+// Return a list of `params` to populate the [slug] dynamic segment
+export async function generateStaticParams() {
+  const listings = await axiosRoot({
+    method: "GET",
+    url: "listings",
+  });
+  const data = listings.data;
+  return data?.map((listing: listing) => ({
+    slug: listing._id,
+  }));
+}
+// export async function getStaticProps() {
+//   return { props: { any: null } };
+// }
 
 const Header = () => {
   const user = useAppSelector((state) => state.user.currentUser);
