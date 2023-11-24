@@ -1,12 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaSearch, FaUser } from "react-icons/fa";
 import Loading from "../ui/loading";
 import { axiosAuth, axiosRoot } from "@/lib/axios/axiosInstance";
 import { logOutService } from "@/services/authServices/logOut";
 import { logOut, signInSuccess } from "@/redux/userSlice";
-import { useEffect } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 // Return a list of `params` to populate the [slug] dynamic segment
 export async function generateStaticParams() {
@@ -25,12 +31,22 @@ export async function generateStaticParams() {
 
 const Header = () => {
   const user = useAppSelector((state) => state.user.currentUser);
-
   const loading = useAppSelector((state) => state.user.loading);
   // const { CancelToken } = axios;
   // const source = CancelToken.source();
   const dispatch = useAppDispatch();
   const route = useRouter();
+  const searchParams = useSearchParams();
+  const [searchValue, setSearchValue] = useState("");
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
   // const refreshToken = async () => {
   //   try {
   //     const res = await axiosAuth({
@@ -146,6 +162,19 @@ const Header = () => {
     return () => clearTimeout(timeoutId);
   }, [user]);
 
+  const handleSearchSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchValue("");
+    route.push(
+      `/search?${createQueryString(
+        "filter_value",
+        encodeURIComponent(searchValue)
+      )}`
+    );
+  };
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
   return (
     <>
       {loading && <Loading />}
@@ -159,11 +188,16 @@ const Header = () => {
               Estate
             </span>
           </Link>
-          <form className="bg-slate-100 p-3 rounded-lg flex items-center justify-between w-52 md:w-72">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="bg-slate-100 p-3 rounded-lg flex items-center justify-between w-52 md:w-72"
+          >
             <input
               type="text"
               placeholder="Search..."
               className="bg-transparent focus:outline-none w-4/5"
+              onChange={handleSearchChange}
+              value={searchValue}
             />
             <span className="cursor-pointer">
               <FaSearch />
