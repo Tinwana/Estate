@@ -14,10 +14,10 @@ const listingsServiceMiddleware = async (req, res, next) => {
   if ((offer === undefined) | (offer === false)) {
     offer = { $in: [false, true] };
   }
-  if ((furnished === undefined) | (furnished === "false")) {
+  if ((furnished === undefined) | (furnished === false)) {
     furnished = { $in: [false, true] };
   }
-  if ((parking === undefined) | (parking === "false")) {
+  if ((parking === undefined) | (parking === false)) {
     parking = { $in: [false, true] };
   }
   if ((type === undefined) | (type === "all")) {
