@@ -132,7 +132,6 @@ const SearchPage = () => {
       console.log(error);
     }
   };
-  console.log(listings);
 
   return (
     <div className="mt-[72px] flex flex-col md:flex-row">
